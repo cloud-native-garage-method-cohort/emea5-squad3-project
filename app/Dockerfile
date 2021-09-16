@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.8-buster
 RUN apt-get update 
 WORKDIR /usr/src/app
 COPY requirements ./
