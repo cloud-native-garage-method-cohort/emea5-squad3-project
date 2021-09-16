@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: emea5-squad3-pipeline-run-
+spec:
+  pipelineRef:
+    name: emea5-squad3-pipeline
+  serviceAccountName: build-bot
+  params:
+    - name: source-repo
+      value: https://github.com/cloud-native-garage-method-cohort/emea5-squad3-project.git
+    - name: image-repo 
+      value: quay.io/lucilejerber/emea5-squad3
+    - name: app-name
+      value: emea5-squad3
+  workspaces:
+    - name: pipeline-shared-data
+      volumeClaimTemplate: 
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
