@@ -3,7 +3,7 @@ RUN apt-get update
 WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1  
-COPY app/requirements ./
+COPY app/requirements.txt ./
 RUN pip install -r requirements
 COPY app/ .
 RUN python manage.py migrate

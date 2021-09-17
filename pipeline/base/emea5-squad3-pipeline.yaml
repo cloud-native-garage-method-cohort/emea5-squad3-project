@@ -26,17 +26,6 @@ spec:
       workspaces:
         - name: output
           workspace: pipeline-shared-data
-    - name: python-lint
-      runAfter:
-        - clone-repository
-      taskRef:
-        name: pylint
-      workspaces:
-        - name: source
-          workspace: pipeline-shared-data
-      params:
-        - name: path
-          value: "./app"
     - name: python-test
       runAfter:
         - clone-repository
@@ -47,10 +36,10 @@ spec:
           workspace: pipeline-shared-data
       params:
         - name: SOURCE_PATH
-          value: "./app"
+          value: "./app/tests.py"
     - name: build-and-push-image
       runAfter:
-        - clone-repository
+        - python-test
       taskRef:
         kind: ClusterTask
         name: buildah
