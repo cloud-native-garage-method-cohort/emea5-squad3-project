@@ -3,9 +3,9 @@ RUN apt-get update
 WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1  
-COPY requirements ./
+COPY app/requirements ./
 RUN pip install -r requirements
-COPY . .
+COPY app/ .
 RUN python manage.py migrate
 EXPOSE 8080
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
