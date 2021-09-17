@@ -23,7 +23,7 @@ spec:
       script: |
         #!/bin/sh
 
-        cd source/k8s
+        cd source/app/k8s
 
         if [ -f kustomization.yaml ] || [ -f kustomization.yml ] || [ -f Kustomization ]; then
           echo "Kustomization file found."
