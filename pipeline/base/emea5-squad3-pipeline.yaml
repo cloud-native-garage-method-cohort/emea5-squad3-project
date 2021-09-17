@@ -30,13 +30,13 @@ spec:
       runAfter:
         - clone-repository
       taskRef:
-        name: pytest
+        name: run-tests
       workspaces:
         - name: source
           workspace: pipeline-shared-data
       params:
         - name: SOURCE_PATH
-          value: "./app/tests.py"
+          value: "./app"
     - name: build-and-push-image
       runAfter:
         - python-test
