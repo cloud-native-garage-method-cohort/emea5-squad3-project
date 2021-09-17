@@ -54,7 +54,7 @@ spec:
         generateName: emea5-squad3-pipeline-
       spec:
         pipelineRef:
-          name: nodejs-pipeline
+          name: emea5-squad3-pipeline
         serviceAccountName: build-bot
         params:
           - name: app-name
