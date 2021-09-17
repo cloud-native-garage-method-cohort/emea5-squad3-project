@@ -1,0 +1,66 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: emea5-squad3-pipeline
+spec:
+  params:
+    - name: source-repo
+      type: string
+      description: Source code repository
+    - name: image-repo
+      type: string
+      description: Docker image repository
+    - name: app-name
+      type: string
+      description: human readable name for the application
+  workspaces:
+    - name: pipeline-shared-data
+  tasks:
+    - name: clone-repository
+      params:
+        - name: url
+          value: "$(params.source-repo)"
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: pipeline-shared-data
+    - name: python-lint
+      runAfter:
+        - clone-repository
+      taskRef:
+        name: pylint
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      params:
+        - name: path
+          value: "./app"
+    - name: python-test
+      runAfter:
+        - clone-repository
+      taskRef:
+        name: pytest
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      params:
+        - name: SOURCE_PATH
+          value: "./app"
+    - name: build-and-push-image
+      runAfter:
+        - clone-repository
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      params:
+        - name: IMAGE
+          value: "$(params.image-repo):$(tasks.clone-repository.results.commit)"
+        - name: DOCKERFILE
+          value: "./app"
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+
+
